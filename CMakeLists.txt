@@ -1,19 +1,22 @@
-cmake_minimum_required(VERSION 2.8)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 
-project(wxRenderer)
+PROJECT(wxRenderer)
 
-set(CMAKE_BUILD_TYPE Debug)
+SET(CMAKE_BUILD_TYPE Debug)
 
-add_definitions(-std=c++11)
+ADD_DEFINITIONS(-std=c++17)
 
-include_directories(/usr/include/eigen3)
 
-find_package(wxWidgets REQUIRED core)
-if(wxWidgets_FOUND)
-	include(${wxWidgets_USE_FILE})
-endif(wxWidgets_FOUND)
 
-set(SOURCE gui/MyApp.cpp
+FIND_PACKAGE(wxWidgets REQUIRED core)
+IF(wxWidgets_FOUND)
+	INCLUDE(${wxWidgets_USE_FILE})
+ENDIF(wxWidgets_FOUND)
+
+# INCLUDE_DIRECTORIES(/usr/include/eigen3)
+FIND_PACKAGE(Eigen3 3.3 REQUIRED NO_MODULE)
+
+SET(SOURCE gui/MyApp.cpp
            gui/MyFrame.cpp
            gui/MyCanvas.cpp
            renderer/MyRenderer.cpp
@@ -28,5 +31,5 @@ set(SOURCE gui/MyApp.cpp
            geometry/Vector3D.hpp
            data/teapot.hpp)
              
-add_executable(MyRenderer ${SOURCE})
-target_link_libraries(MyRenderer ${wxWidgets_LIBRARIES})
+ADD_EXECUTABLE(${PROJECT_NAME} ${SOURCE})
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${wxWidgets_LIBRARIES} Eigen3::Eigen)
